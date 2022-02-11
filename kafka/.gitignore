@@ -1,0 +1,2 @@
+connector_twitter_config.properties
+mongo-sink-from-twitter.properties

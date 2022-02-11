@@ -1,0 +1,9 @@
+name = twitter-bbb
+connector.class = com.github.jcustenborder.kafka.connect.twitter.TwitterSourceConnector
+twitter.oauth.consumerKey = API KEY
+twitter.oauth.consumerSecret = API KEY SECRET
+twitter.oauth.accessToken = ACCESS TOKEN
+twitter.oauth.accessTokenSecret = ACCESS TOKEN SECRET
+filter.keywords = bbb, bigbrother, big bigbrother
+kafka.status.topic = twitter
+process.deletes = false
