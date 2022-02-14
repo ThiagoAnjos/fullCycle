@@ -1,0 +1,17 @@
+version: "3"
+
+services:
+    app:
+        build: .
+        entrypoint: sh -c "npm install && npm run dev"
+        volumes:
+            - .:/home/node/app
+        ports:
+            - 3001:3000
+        networks:
+            - full_cycle
+        extra_hosts:
+            - "host.docker.internal:172.18.0.1"
+networks:
+    full_cycle:
+        name: full_cycle

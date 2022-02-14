@@ -1,17 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { CreateMailListDto } from './dto/create-mail-list.dto';
-import { UpdateMailListDto } from './dto/update-mail-list.dto';
 import { MailList, MailListDocument } from './schemas/mail-list.schema';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose'
+import { Model } from 'mongoose';
 
 @Injectable()
 export class MailListService {
-
   constructor(
     @InjectModel(MailList.name)
     private mailListModel: Model<MailListDocument>,
-  ) { }
+  ) {}
 
   async create({ emails }: CreateMailListDto) {
     const mail = await this.findOne();

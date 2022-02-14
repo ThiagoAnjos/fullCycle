@@ -1,17 +1,45 @@
 import { Module } from '@nestjs/common';
 import { MailListService } from './mail-list.service';
 import { MailListController } from './mail-list.controller';
-import { MailList, MailListSchema } from './schemas/mail-list.schema'
-import { MongooseModule } from '@nestjs/mongoose'
-import { SendMailTweetsJob } from './send-mail-tweets.job'
+import { MongooseModule } from '@nestjs/mongoose';
+import { MailList, MailListSchema } from './schemas/mail-list.schema';
+import { SendMailTweetsJob } from './send-mail-tweets.job';
+import { ClientKafka, ClientsModule, Transport } from '@nestjs/microservices';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
-      { name: MailList.name, schema: MailListSchema }
-    ])
+      { name: MailList.name, schema: MailListSchema },
+    ]),
+    ClientsModule.registerAsync([
+      {
+        name: 'KAFKA_SERVICE',
+        useFactory: () => ({
+          transport: Transport.KAFKA,
+          options: {
+            client: {
+              clientId: 'nest',
+              brokers: ['kafka:9094']
+            },
+          },
+          consumer: {
+            groupId: 'nest'
+          },
+        }),
+      },
+    ]),
   ],
   controllers: [MailListController],
-  providers: [MailListService, SendMailTweetsJob]
+  providers: [
+    MailListService,
+    SendMailTweetsJob,
+    {
+      provide: 'KAFKA_PRODUCER',
+      useFactory: async (kafkaService: ClientKafka) => {
+        return kafkaService.connect();
+      },
+      inject: ['KAFKA_SERVICE'],
+    },
+  ],
 })
-export class MailListModule { }
+export class MailListModule {}
