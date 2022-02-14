@@ -1,0 +1,23 @@
+version: '3'
+services:
+  go:
+    build: .
+    environment:
+      - MAIL_HOST=smtp.gmail.com
+      - MAIL_PORT=587
+      - MAIL_USER=thiagoanjos.outsystems@gmail.com      
+      - MAIL_FROM=thiago@dosanjos.dev
+      - BOOTSTRAP_SERVERS=kafka:9094
+      - SECURITY_PROTOCOL=SASL_SSL
+      - SASL_MECHANISMS=PLAIN
+      - SASL_USERNAME=XMNIRNUJXI3E7GCC
+      - SASL_PASSWORD=CdaTkW32rtDoutQCcCrXHdlonmHjdGc71My3iwoYUxOLHqsnO2Rn5XKaS+FdmEuZ
+    volumes:
+      - .:/go/src/
+    extra_hosts:
+      - "host.docker.internal:172.17.0.1"
+    networks:
+      - full_cycle
+networks:
+    full_cycle:
+        name: full_cycle
